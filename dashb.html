@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - GlobalTrotters</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E40AF;
+            --secondary: #3B82F6;
+            --accent: #06B6D4;
+            --white: #FFFFFF;
+            --dark: #1E293B;
+            --gray: #64748B;
+            --light-blue: #EFF6FF;
+            --light-gray: #F8FAFC;
+            --border: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 3rem;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .logo-main {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .logo-accent {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-section h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-items {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.8rem 1rem;
+            text-decoration: none;
+            color: var(--dark);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover {
+            background: var(--light-blue);
+            color: var(--primary);
+        }
+
+        .nav-item a.active {
+            background: var(--light-blue);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-item a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .upgrade-banner {
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .upgrade-banner h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upgrade-banner p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .upgrade-btn {
+            width: 100%;
+            padding: 0.6rem;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upgrade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .header-left p {
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            width: 300px;
+            font-size: 0.95rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .stat-info p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .action-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Recent Trips */
+        .recent-trips {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .trips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .trip-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .trip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .trip-image {
+            height: 150px;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            position: relative;
+        }
+
+        .trip-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1rem;
+        }
+
+        .trip-status {
+            background: white;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .trip-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .trip-actions button {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trip-actions button:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .trip-info {
+            padding: 1.5rem;
+        }
+
+        .trip-info h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .trip-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .trip-meta i {
+            color: var(--primary);
+        }
+
+        .trip-progress {
+            margin-top: 1rem;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--light-gray);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            border-radius: 3px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main-content {
+                margin-left: 220px;
+            }
+
+            .search-box input {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .stats-grid,
+            .actions-grid,
+            .trips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .header-right {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .user-menu {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">🌍</div>
+            <div class="logo-text">
+                <span class="logo-main">Global</span>
+                <span class="logo-accent">Trotters</span>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <h3>Main Menu</h3>
+            <ul class="nav-items">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="active">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="create-trip.html">
+                        <i class="fas fa-plus-circle"></i>
+                        Create Trip
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-trips.html">
+                        <i class="fas fa-suitcase"></i>
+                        My Trips
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="itinerary-builder.html">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Itinerary Builder
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <h3>Planning Tools</h3>
+            <ul class="nav-items">
+                <li class="nav-item">
+                    <a href="destination-explorer.html">
+                        <i class="fas fa-search"></i>
+                        Destination Explorer
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="activity-finder.html">
+                        <i class="fas fa-hiking"></i>
+                        Activity Finder
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="budget-tracker.html">
+                        <i class="fas fa-chart-pie"></i>
+                        Budget Tracker
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="trip-calendar.html">
+                        <i class="fas fa-calendar-alt"></i>
+                        Trip Calendar
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <h3>Collaboration</h3>
+            <ul class="nav-items">
+                <li class="nav-item">
+                    <a href="shared-itineraries.html">
+                        <i class="fas fa-share-alt"></i>
+                        Shared Itineraries
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="group-planning.html">
+                        <i class="fas fa-users"></i>
+                        Group Planning
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <h3>Account</h3>
+            <ul class="nav-items">
+                <li class="nav-item">
+                    <a href="profile.html">
+                        <i class="fas fa-user"></i>
+                        Profile Settings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="upgrade-banner">
+            <h4>Upgrade to Pro</h4>
+            <p>Unlock advanced AI features and unlimited trips</p>
+            <button class="upgrade-btn">Upgrade Now</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>Welcome back, Alex! 👋</h1>
+                <p>Here's what's happening with your trips today</p>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search trips, destinations...">
+                </div>
+                <div class="user-menu">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="user-profile">
+                        <div class="user-avatar">A</div>
+                        <div class="user-info">
+                            <h4>Alex Explorer</h4>
+                            <p>Premium Member</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-suitcase"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>7</h3>
+                    <p>Active Trips</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>15</h3>
+                    <p>Countries Visited</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>$4,250</h3>
+                    <p>Total Saved</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>42</h3>
+                    <p>Activities Planned</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <div class="section-header">
+                <h2>Quick Actions</h2>
+                <button class="btn" onclick="window.location.href='create-trip.html'">
+                    <i class="fas fa-plus"></i> Create New
+                </button>
+            </div>
+            <div class="actions-grid">
+                <div class="action-card" onclick="window.location.href='create-trip.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <h4>Create Trip</h4>
+                    <p>Start planning a new adventure</p>
+                </div>
+                <div class="action-card" onclick="window.location.href='itinerary-builder.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h4>Build Itinerary</h4>
+                    <p>Design day-by-day schedule</p>
+                </div>
+                <div class="action-card" onclick="window.location.href='budget-tracker.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h4>Track Budget</h4>
+                    <p>Monitor expenses & costs</p>
+                </div>
+                <div class="action-card" onclick="window.location.href='destination-explorer.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h4>Explore</h4>
+                    <p>Find new destinations</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Trips -->
+        <section class="recent-trips">
+            <div class="section-header">
+                <h2>Recent Trips</h2>
+                <button class="btn" onclick="window.location.href='my-trips.html'">
+                    View All
+                </button>
+            </div>
+            <div class="trips-grid">
+                <div class="trip-card" onclick="window.location.href='itinerary-builder.html'">
+                    <div class="trip-image" style="background: linear-gradient(135deg, #FF6B6B, #FF8E53);">
+                        <div class="trip-overlay">
+                            <div class="trip-status">Upcoming</div>
+                            <div class="trip-actions">
+                                <button><i class="fas fa-edit"></i></button>
+                                <button><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trip-info">
+                        <h3>Summer Europe Tour</h3>
+                        <div class="trip-meta">
+                            <span><i class="fas fa-calendar"></i> Jun 15-30, 2024</span>
+                            <span><i class="fas fa-map-marker-alt"></i> 4 cities</span>
+                        </div>
+                        <div class="trip-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%;"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>75% planned</span>
+                                <span>$3,200/$4,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-card" onclick="window.location.href='itinerary-builder.html'">
+                    <div class="trip-image" style="background: linear-gradient(135deg, #4ECDC4, #44A08D);">
+                        <div class="trip-overlay">
+                            <div class="trip-status">In Progress</div>
+                            <div class="trip-actions">
+                                <button><i class="fas fa-edit"></i></button>
+                                <button><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trip-info">
+                        <h3>Japan Cherry Blossom</h3>
+                        <div class="trip-meta">
+                            <span><i class="fas fa-calendar"></i> Mar 25 - Apr 5, 2024</span>
+                            <span><i class="fas fa-map-marker-alt"></i> 3 cities</span>
+                        </div>
+                        <div class="trip-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%;"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>90% planned</span>
+                                <span>$2,800/$3,100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-card" onclick="window.location.href='shared-itineraries.html'">
+                    <div class="trip-image" style="background: linear-gradient(135deg, #9D50BB, #6E48AA);">
+                        <div class="trip-overlay">
+                            <div class="trip-status">Completed</div>
+                            <div class="trip-actions">
+                                <button><i class="fas fa-share"></i></button>
+                                <button><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trip-info">
+                        <h3>Thailand Adventure</h3>
+                        <div class="trip-meta">
+                            <span><i class="fas fa-calendar"></i> Dec 10-20, 2023</span>
+                            <span><i class="fas fa-map-marker-alt"></i> 5 cities</span>
+                        </div>
+                        <div class="trip-progress">
+                            <div class="progress-info">
+                                <span><i class="fas fa-check-circle" style="color: #10B981;"></i> Trip completed</span>
+                                <span>4.8 ★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize tooltips
+        document.querySelectorAll('.trip-actions button').forEach(btn => {
+            btn.addEventListener('mouseover', function () {
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('fa-edit')) {
+                    this.title = 'Edit Trip';
+                } else if (icon.classList.contains('fa-trash')) {
+                    this.title = 'Delete Trip';
+                } else if (icon.classList.contains('fa-share')) {
+                    this.title = 'Share Trip';
+                } else if (icon.classList.contains('fa-copy')) {
+                    this.title = 'Duplicate Trip';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - GlobalTrotters</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E40AF;
+            --secondary: #3B82F6;
+            --accent: #06B6D4;
+            --white: #FFFFFF;
+            --dark: #1E293B;
+            --gray: #64748B;
+            --light-blue: #EFF6FF;
+            --light-gray: #F8FAFC;
+            --border: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 3rem;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .logo-main {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .logo-accent {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-section h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-items {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.8rem 1rem;
+            text-decoration: none;
+            color: var(--dark);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover {
+            background: var(--light-blue);
+            color: var(--primary);
+        }
+
+        .nav-item a.active {
+            background: var(--light-blue);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-item a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .upgrade-banner {
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .upgrade-banner h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upgrade-banner p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .upgrade-btn {
+            width: 100%;
+            padding: 0.6rem;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upgrade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .header-left p {
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            width: 300px;
+            font-size: 0.95rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .stat-info p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .action-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Recent Trips */
+        .recent-trips {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .trips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .trip-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .trip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .trip-image {
+            height: 150px;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            position: relative;
+        }
+
+        .trip-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1rem;
+        }
+
+        .trip-status {
+            background: white;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .trip-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .trip-actions button {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trip-actions button:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .trip-info {
+            padding: 1.5rem;
+        }
+
+        .trip-info h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .trip-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .trip-meta i {
+            color: var(--primary);
+        }
+
+        .trip-progress {
+            margin-top: 1rem;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--light-gray);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            border-radius: 3px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main-content {
+                margin-left: 220px;
+            }
+
+            .search-box input {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .stats-grid,
+            .actions-grid,
+            .trips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .header-right {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .user-menu {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">🌍</div>
+            <div class="logo-text">
+                <span class="logo-main">Global</span>
+                <span class="logo-accent">Trotters</span>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <h3>Main Menu</h3>
+            <ul class="nav-items">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="active">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="create-trip.html">
+                        <i class="fas fa-plus-circle"></i>
+                        Create Trip
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-trips.html">
+                        <i class="fas fa-suitcase"></i>
+                        My Trips
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="itinerary-builder.html">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Itinerary Builder
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <h3>Planning Tools</h3>
+            <ul class="nav-items">
+                <li class="nav-item">
+                    <a href="destination-explorer.html">
+                        <i class="fas fa-search"></i>
+                        Destination Explorer
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="activity-finder.html">
+                        <i class="fas fa-hiking"></i>
+                        Activity Finder
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="budget-tracker.html">
+                        <i class="fas fa-chart-pie"></i>
+                        Budget Tracker
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="trip-calendar.html">
+                        <i class="fas fa-calendar-alt"></i>
+                        Trip Calendar
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <h3>Collaboration</h3>
+            <ul class="nav-items">
+                <li class="nav-item">
+                    <a href="shared-itineraries.html">
+                        <i class="fas fa-share-alt"></i>
+                        Shared Itineraries
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="group-planning.html">
+                        <i class="fas fa-users"></i>
+                        Group Planning
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <h3>Account</h3>
+            <ul class="nav-items">
+                <li class="nav-item">
+                    <a href="profile.html">
+                        <i class="fas fa-user"></i>
+                        Profile Settings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="upgrade-banner">
+            <h4>Upgrade to Pro</h4>
+            <p>Unlock advanced AI features and unlimited trips</p>
+            <button class="upgrade-btn">Upgrade Now</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>Welcome back, Alex! 👋</h1>
+                <p>Here's what's happening with your trips today</p>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search trips, destinations...">
+                </div>
+                <div class="user-menu">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="user-profile">
+                        <div class="user-avatar">A</div>
+                        <div class="user-info">
+                            <h4>Alex Explorer</h4>
+                            <p>Premium Member</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-suitcase"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>7</h3>
+                    <p>Active Trips</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>15</h3>
+                    <p>Countries Visited</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>$4,250</h3>
+                    <p>Total Saved</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>42</h3>
+                    <p>Activities Planned</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <div class="section-header">
+                <h2>Quick Actions</h2>
+                <button class="btn" onclick="window.location.href='create-trip.html'">
+                    <i class="fas fa-plus"></i> Create New
+                </button>
+            </div>
+            <div class="actions-grid">
+                <div class="action-card" onclick="window.location.href='create-trip.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <h4>Create Trip</h4>
+                    <p>Start planning a new adventure</p>
+                </div>
+                <div class="action-card" onclick="window.location.href='itinerary-builder.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h4>Build Itinerary</h4>
+                    <p>Design day-by-day schedule</p>
+                </div>
+                <div class="action-card" onclick="window.location.href='budget-tracker.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h4>Track Budget</h4>
+                    <p>Monitor expenses & costs</p>
+                </div>
+                <div class="action-card" onclick="window.location.href='destination-explorer.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h4>Explore</h4>
+                    <p>Find new destinations</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Trips -->
+        <section class="recent-trips">
+            <div class="section-header">
+                <h2>Recent Trips</h2>
+                <button class="btn" onclick="window.location.href='my-trips.html'">
+                    View All
+                </button>
+            </div>
+            <div class="trips-grid">
+                <div class="trip-card" onclick="window.location.href='itinerary-builder.html'">
+                    <div class="trip-image" style="background: linear-gradient(135deg, #FF6B6B, #FF8E53);">
+                        <div class="trip-overlay">
+                            <div class="trip-status">Upcoming</div>
+                            <div class="trip-actions">
+                                <button><i class="fas fa-edit"></i></button>
+                                <button><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trip-info">
+                        <h3>Summer Europe Tour</h3>
+                        <div class="trip-meta">
+                            <span><i class="fas fa-calendar"></i> Jun 15-30, 2024</span>
+                            <span><i class="fas fa-map-marker-alt"></i> 4 cities</span>
+                        </div>
+                        <div class="trip-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%;"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>75% planned</span>
+                                <span>$3,200/$4,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-card" onclick="window.location.href='itinerary-builder.html'">
+                    <div class="trip-image" style="background: linear-gradient(135deg, #4ECDC4, #44A08D);">
+                        <div class="trip-overlay">
+                            <div class="trip-status">In Progress</div>
+                            <div class="trip-actions">
+                                <button><i class="fas fa-edit"></i></button>
+                                <button><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trip-info">
+                        <h3>Japan Cherry Blossom</h3>
+                        <div class="trip-meta">
+                            <span><i class="fas fa-calendar"></i> Mar 25 - Apr 5, 2024</span>
+                            <span><i class="fas fa-map-marker-alt"></i> 3 cities</span>
+                        </div>
+                        <div class="trip-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%;"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>90% planned</span>
+                                <span>$2,800/$3,100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-card" onclick="window.location.href='shared-itineraries.html'">
+                    <div class="trip-image" style="background: linear-gradient(135deg, #9D50BB, #6E48AA);">
+                        <div class="trip-overlay">
+                            <div class="trip-status">Completed</div>
+                            <div class="trip-actions">
+                                <button><i class="fas fa-share"></i></button>
+                                <button><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trip-info">
+                        <h3>Thailand Adventure</h3>
+                        <div class="trip-meta">
+                            <span><i class="fas fa-calendar"></i> Dec 10-20, 2023</span>
+                            <span><i class="fas fa-map-marker-alt"></i> 5 cities</span>
+                        </div>
+                        <div class="trip-progress">
+                            <div class="progress-info">
+                                <span><i class="fas fa-check-circle" style="color: #10B981;"></i> Trip completed</span>
+                                <span>4.8 ★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize tooltips
+        document.querySelectorAll('.trip-actions button').forEach(btn => {
+            btn.addEventListener('mouseover', function () {
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('fa-edit')) {
+                    this.title = 'Edit Trip';
+                } else if (icon.classList.contains('fa-trash')) {
+                    this.title = 'Delete Trip';
+                } else if (icon.classList.contains('fa-share')) {
+                    this.title = 'Share Trip';
+                } else if (icon.classList.contains('fa-copy')) {
+                    this.title = 'Duplicate Trip';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
